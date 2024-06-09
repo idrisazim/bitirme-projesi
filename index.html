@@ -237,7 +237,7 @@
       
       function fetchStockData(stockCode) {
         // Fetch stock data from an API
-        fetch(`https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${stockCode}&apikey=7HZUF1EW3NN51NJT`)
+        fetch(`https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${stockCode}&apikey=KM_apxd5Gs61wSRi6eMp`)
           .then(response => response.json())
           .then(data => {
             const timeSeries = data['Time Series (Daily)'];
