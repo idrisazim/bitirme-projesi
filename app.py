@@ -10,8 +10,6 @@ import requests
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 import time
-from dateutil.parser import parse
-import datetime
 
 plt.style.use('fivethirtyeight')
 
@@ -124,10 +122,10 @@ def fetch_news(stock_symbol=None):
     for item in basic:
         disclosure_index = item["disclosureIndex"]
         company_code = item["stockCodes"]
-        title = item["title"]
+        main_title = item["mainTitle"]  # Change 'mainTitle' to the actual key for the main title
         pdf_url = f"https://www.kap.org.tr/tr/BildirimPdf/{disclosure_index}"
-        news_list.append({"company_code": company_code, "title": title, "pdf_url": pdf_url})
-        if len(news_list) >= 20:  # Limit to the first 10 news items
+        news_list.append({"company_code": company_code, "title": main_title, "pdf_url": pdf_url})
+        if len(news_list) >= 20:  # Limit to the first 20 news items
             break
     return news_list
 
