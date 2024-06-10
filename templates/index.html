@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge" />
+  <title>Bitirme projesi</title>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.0.0/css/all.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" />
+  <link rel="stylesheet" href="static/css/mdb.min.css" />
+  <link rel="stylesheet" href="static/css/admin.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="static/css/style.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    .scrolling-bar {
+      max-height: 300px;
+      overflow-y: scroll;
+    }
+    .news-item {
+      border-bottom: 1px solid #ddd;
+      padding: 10px 0;
+    }
+    .fetch-news-btn, submit{
+      padding: 10px 0;
+      margin-top: 50;
+    }
+  </style>
+</head>
+
+<body>
+  <!--Main Navigation-->
+  <header>
+    <!-- Sidebar -->
+    <nav id="sidebarMenu" class="collapse d-lg-block sidebar collapse bg-white">
+      <div class="position-sticky">
+        <div class="list-group list-group-flush mx-3 mt-4">
+          <a href="#" class="list-group-item list-group-item-action py-2" data-mdb-ripple-init aria-current="true">
+            <i class="fas fa-tachometer-alt fa-fw me-3"></i><span>RSI al/sat sinyali</span>
+          </a>
+          <a href="#" class="list-group-item list-group-item-action py-2" data-mdb-ripple-init><i class="fas fa-chart-bar fa-fw me-3"></i><span>Haberler</span></a>
+          <a href="#" class="list-group-item list-group-item-action py-2" data-mdb-ripple-init><i class="fas fa-users fa-fw me-3"></i><span>Kullanıcılar</span></a>
+        </div>
+      </div>
+    </nav>
+    <!-- Sidebar -->
+
+    <!-- Navbar -->
+    <nav id="main-navbar" class="navbar navbar-expand-lg navbar-light bg-white fixed-top">
+      <!-- Container wrapper -->
+      <div class="container-fluid">
+        <!-- Toggle button -->
+        <button class="navbar-toggler" type="button" data-mdb-collapse-init data-mdb-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+          <i class="fas fa-bars"></i>
+        </button>
+
+        <!-- Search form -->
+        <form class="d-none d-md-flex input-group w-auto my-auto">
+          <input autocomplete="off" type="search" class="form-control rounded" placeholder='Ara' style="min-width: 225px" />
+          <span class="input-group-text border-0"><i class="fas fa-search"></i></span>
+        </form>
+
+        <!-- Right links -->
+        <ul class="navbar-nav ms-auto d-flex flex-row">
+
+
+          <!-- Icon -->
+          <li class="nav-item">
+            <a class="nav-link me-3 me-lg-0" href="#">
+              <i class="fas fa-fill-drip"></i>
+            </a>
+          </li>
+          <!-- Icon -->
+          <li class="nav-item me-3 me-lg-0">
+            <a class="nav-link" href="#">
+              <i class="fab fa-github"></i>
+            </a>
+          </li>
+
+
+          <!-- Avatar -->
+          <li class="nav-item dropdown">
+  
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
+              <li><a class="dropdown-item" href="#">Profilim</a></li>
+              <li><a class="dropdown-item" href="#">Ayarlar</a></li>
+              <li><a class="dropdown-item" href="#">Oturumu kapat</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+      <!-- Container wrapper -->
+    </nav>
+    <!-- Navbar -->
+  </header>
+  <!--Main Navigation-->
+
+  <!--Main layout-->
+  <main style="margin-top: 58px;">
+    <div class="container pt-4">
+      <!-- Stock Graph Section -->
+      <div class="card mb-4">
+        <div class="card-header">
+          RSI al/sat sinyali
+        </div>
+        <div class="card-body">
+          <h1>RSI sinyal</h1>
+          <form action="/" method="post">
+              <label for="stock">Hisse kodunu giriniz</label>
+              <input type="text" id="stock" name="stock" required>
+              <button id="submit" type="submit" class="btn btn-primary">Graf üret</button>
+          </form>
+      
+          {% if stock_code %}
+              <h2>{{ stock_code }}</h2>
+              <img src="{{ url_for('plot_image', symbol=stock_code) }}" alt="Stock Plot" class="stock-plot">
+          {% endif %}
+          
+          <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+          <div class="mt-4">
+            <button id="fetch-news-btn" class="btn btn-primary">Haberler</button>
+            <div class="scrolling-bar mt-3" id="news-list"></div>
+          </div>
+        </div>
+        <script>
+          $(document).ready(function () {
+            $('#stock-form').on('submit', function (event) {
+              event.preventDefault();
+              const stockCode = $('#stock').val();
+              const plotImageUrl = `/plot_image/${stockCode}`;
+              $('#stock-plot').attr('src', plotImageUrl);
+            });
+      
+            $('#fetch-news-btn').on('click', function () {
+              alert("Lütfen biraz bekleyiniz");
+              const stockCode = $('#stock').val();
+              $.ajax({
+                url: `/fetch_news`,
+                type: 'GET',
+                data: { symbol: stockCode },
+                success: function (response) {
+                  const newsList = $('#news-list');
+                  newsList.empty();
+                  if (response.news.length > 0) {
+                    response.news.forEach(function (newsItem) {
+                      const newsDiv = $('<div class="news-item"></div>');
+                      const titleLink = $('<a></a>')
+                        .attr('href', newsItem.pdf_url)
+                        .text(`${newsItem.company_code}: ${newsItem.title}`)
+                        .attr('target', '_blank');
+                      newsDiv.append(titleLink);
+                      newsList.append(newsDiv);
+                    });
+                  } else {
+                    const noNewsDiv = $('<div class="news-item"></div>').text('No news found.');
+                    newsList.append(noNewsDiv);
+                  }
+                },
+                error: function (error) {
+                  console.error('Error fetching news:', error);
+                },
+              });
+            });
+          });
+        </script>
+        <script type="text/javascript" src="static/js/mdb.min.js"></script>
+          <canvas id="stockChart" width="400" height="200"></canvas>
+          
+        </div>
+        
+      </div>
+    </div>
+  </main>
+  <!--Main layout-->
+
+  <!-- MDB -->
+  <script type="text/javascript" src="js/mdb.min.js"></script>
+  <!-- Custom scripts -->
+  <script type="text/javascript" src="js/admin.js"></script>
+  <!-- Stock Graph Script -->
+  <script>
+    document.getElementById('stockForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+      const stockCode = document.getElementById('stockCode').value;
+      fetchStockData(stockCode);
+    });
+  
+</body>
+
+</html>
