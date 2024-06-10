@@ -119,10 +119,15 @@ def fetch_news(stock_symbol=None):
     r = requests.get(api[2]).json()
     news_list = []
     basic = [item["basic"] for item in r]
+    
+    # Print the structure of the first item to inspect keys
+    if basic:
+        print(basic[0])
+    
     for item in basic:
         disclosure_index = item["disclosureIndex"]
         company_code = item["stockCodes"]
-        main_title = item["mainTitle"]  # Change 'mainTitle' to the actual key for the main title
+        main_title = item.get("title")  # Temporarily use 'title' until you find the correct key
         pdf_url = f"https://www.kap.org.tr/tr/BildirimPdf/{disclosure_index}"
         news_list.append({"company_code": company_code, "title": main_title, "pdf_url": pdf_url})
         if len(news_list) >= 20:  # Limit to the first 20 news items

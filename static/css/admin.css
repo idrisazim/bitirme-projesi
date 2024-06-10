@@ -15,7 +15,18 @@ img.stock-plot {
   margin: 0 auto;
 }
 
-
+.scrolling-bar {
+  max-height: 300px;
+  overflow-y: scroll;
+}
+.news-item {
+  border-bottom: 1px solid #ddd;
+  padding: 10px 0;
+}
+.fetch-news-btn, submit{
+  padding: 10px 0;
+  margin-top: 50;
+}
 
 /* Sidebar */
 .sidebar {

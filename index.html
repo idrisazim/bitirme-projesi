@@ -156,13 +156,8 @@
       </div>
     </div>
   </main>
-  <!--Main layout-->
 
-  <!-- MDB -->
-  <script type="text/javascript" src="js/mdb.min.js"></script>
-  <!-- Custom scripts -->
   <script type="text/javascript" src="js/admin.js"></script>
-  <!-- Stock Graph Script -->
   <script>
     document.getElementById('stockForm').addEventListener('submit', function(event) {
       event.preventDefault();
@@ -171,16 +166,14 @@
     });
 
     function calculateRSI(prices) {
-        const rsiPeriod = 14; // RSI period, typically 14
+        const rsiPeriod = 14; 
         const changes = [];
         const rsiValues = [];
       
-        // Calculate price changes
         for (let i = 1; i < prices.length; i++) {
           changes.push(prices[i] - prices[i - 1]);
         }
       
-        // Calculate initial average gains and losses
         let avgGain = 0;
         let avgLoss = 0;
         for (let i = 0; i < rsiPeriod; i++) {
@@ -192,13 +185,11 @@
         }
         avgGain /= rsiPeriod;
         avgLoss /= rsiPeriod;
-      
-        // Calculate RSI for the first period
+
         let rs = avgGain / avgLoss;
         let rsi = 100 - (100 / (1 + rs));
         rsiValues.push(rsi);
       
-        // Calculate RSI for subsequent periods
         for (let i = rsiPeriod; i < changes.length; i++) {
           if (changes[i] > 0) {
             avgGain = ((avgGain * (rsiPeriod - 1)) + changes[i]) / rsiPeriod;
@@ -252,25 +243,20 @@
       });
       
       function fetchStockData(stockCode) {
-        // Fetch stock data from an API
         fetch(`https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${stockCode}&apikey=KM_apxd5Gs61wSRi6eMp`)
           .then(response => response.json())
           .then(data => {
             const timeSeries = data['Time Series (Daily)'];
             const labels = Object.keys(timeSeries).reverse();
             const prices = labels.map(date => parseFloat(timeSeries[date]['4. close']));
-      
-            // Calculate RSI
+
             const rsiValues = calculateRSI(prices);
       
-            // Display the chart
             displayChart(labels, prices, rsiValues);
           });
       }
   </script>
 
-  
-  
 </body>
 
 </html>

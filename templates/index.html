@@ -13,26 +13,11 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
   <link rel="stylesheet" href="static/css/style.css">
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <style>
-    .scrolling-bar {
-      max-height: 300px;
-      overflow-y: scroll;
-    }
-    .news-item {
-      border-bottom: 1px solid #ddd;
-      padding: 10px 0;
-    }
-    .fetch-news-btn, submit{
-      padding: 10px 0;
-      margin-top: 50;
-    }
-  </style>
+
 </head>
 
 <body>
-  <!--Main Navigation-->
   <header>
-    <!-- Sidebar -->
     <nav id="sidebarMenu" class="collapse d-lg-block sidebar collapse bg-white">
       <div class="position-sticky">
         <div class="list-group list-group-flush mx-3 mt-4">
@@ -44,34 +29,25 @@
         </div>
       </div>
     </nav>
-    <!-- Sidebar -->
-
-    <!-- Navbar -->
     <nav id="main-navbar" class="navbar navbar-expand-lg navbar-light bg-white fixed-top">
-      <!-- Container wrapper -->
       <div class="container-fluid">
-        <!-- Toggle button -->
         <button class="navbar-toggler" type="button" data-mdb-collapse-init data-mdb-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
           <i class="fas fa-bars"></i>
         </button>
 
-        <!-- Search form -->
         <form class="d-none d-md-flex input-group w-auto my-auto">
           <input autocomplete="off" type="search" class="form-control rounded" placeholder='Ara' style="min-width: 225px" />
           <span class="input-group-text border-0"><i class="fas fa-search"></i></span>
         </form>
 
-        <!-- Right links -->
         <ul class="navbar-nav ms-auto d-flex flex-row">
 
 
-          <!-- Icon -->
           <li class="nav-item">
             <a class="nav-link me-3 me-lg-0" href="#">
               <i class="fas fa-fill-drip"></i>
             </a>
           </li>
-          <!-- Icon -->
           <li class="nav-item me-3 me-lg-0">
             <a class="nav-link" href="#">
               <i class="fab fa-github"></i>
@@ -79,7 +55,6 @@
           </li>
 
 
-          <!-- Avatar -->
           <li class="nav-item dropdown">
   
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
@@ -90,22 +65,17 @@
           </li>
         </ul>
       </div>
-      <!-- Container wrapper -->
     </nav>
-    <!-- Navbar -->
   </header>
-  <!--Main Navigation-->
 
-  <!--Main layout-->
   <main style="margin-top: 58px;">
     <div class="container pt-4">
-      <!-- Stock Graph Section -->
       <div class="card mb-4">
         <div class="card-header">
           RSI al/sat sinyali
         </div>
         <div class="card-body">
-          <h1>RSI sinyal</h1>
+          <h1>RSI sinyali</h1>
           <form action="/" method="post">
               <label for="stock">Hisse kodunu giriniz</label>
               <input type="text" id="stock" name="stock" required>
@@ -172,13 +142,7 @@
       </div>
     </div>
   </main>
-  <!--Main layout-->
-
-  <!-- MDB -->
-  <script type="text/javascript" src="js/mdb.min.js"></script>
-  <!-- Custom scripts -->
   <script type="text/javascript" src="js/admin.js"></script>
-  <!-- Stock Graph Script -->
   <script>
     document.getElementById('stockForm').addEventListener('submit', function(event) {
       event.preventDefault();
